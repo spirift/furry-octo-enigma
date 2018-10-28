@@ -12,7 +12,6 @@ const resolvers = {
     info: () => `This is the API of a Hackernews Clone`,
     feed: () => links,
     link: (root, {id}) => {
-      console.log(`id: `, id)
       return links.find((link) => link.id === id)
     }
   },
@@ -25,6 +24,18 @@ const resolvers = {
       }
       links.push(link)
       return link
+    },
+    updateLink: (root, args) => {
+      const linkIndex = links.findIndex((link) => link.id === args.id)
+      if (linkIndex > -1) {
+        if (args.description) {
+          links[linkIndex].description = args.description
+        }
+        if (args.url) {
+          links[linkIndex].url = args.url
+        }
+        return links[linkIndex]
+      }
     }
   },
 }
