@@ -5,5 +5,10 @@ endpoint: https://eu1.prisma.sh/michael-7f6e38/pnp-herald/dev
 # Points to the file that holds your data model
 datamodel: datamodel.graphql
 
+# Deploy hook
+hooks:
+  post-deploy:
+    - graphql get-schema --project database
+
 # You can only access the API when providing JWTs that are signed with this secret
 secret: drn389sef9t9s-29930snsn-SLQKB-01Hhrl-29N-8Gt
