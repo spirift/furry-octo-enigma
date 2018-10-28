@@ -36,7 +36,15 @@ const resolvers = {
         }
         return links[linkIndex]
       }
-    }
+    },
+    deleteLink: (root, { id }) => {
+      const linkIndex = links.findIndex((link) => link.id === id)
+      if (linkIndex > -1) {
+        const oldLink = links[linkIndex]
+        links.splice(linkIndex, 1)
+        return oldLink
+      }
+    },
   },
 }
 
