@@ -1,4 +1,4 @@
-function feed(root, { filter, skip, first, orderBy }, context, info) {
+async function feed(root, { filter, skip, first, orderBy }, context, info) {
   const where = filter
     ? {
         OR: [
@@ -7,11 +7,23 @@ function feed(root, { filter, skip, first, orderBy }, context, info) {
         ],
       }
     : {}
-
-  return context.db.query.links(
+  const queriedLinks = await context.db.query.links(
     { where, skip, first, orderBy },
-    info,
+    `{ id }`,
   )
+  const countSelectionSet = `
+    {
+      aggregate {
+        count
+      }
+    }
+  `
+  const linksConnection = await context.db.query.linksConnection({}, countSelectionSet)
+
+  return {
+    count: linksConnection.aggregate.count,
+    linkIds: queriedLinks.map(link => link.id),
+  }
 }
 
 module.exports = {
