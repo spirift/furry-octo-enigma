@@ -17,7 +17,7 @@ type User {
 }
 
 type Vote {
-  id: ID @unique
+  id: ID! @unique
   link: Link!
   user: User!
 }
